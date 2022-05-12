@@ -1,5 +1,6 @@
 alias docker-minikube="eval $(minikube docker-env)"
 alias docker-default="eval $(minikube docker-env -u)"
+
 alias docker-stop="docker stop $(docker ps -aq)"
 alias docker-rm="docker rm $(docker ps -aq)"
 alias docker-clear="docker stop $(docker ps -aq); docker rm $(docker ps -aq)"
