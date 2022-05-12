@@ -1,0 +1,10 @@
+export ZSH="$HOME/.oh-my-zsh"
+export UTILS="$HOME/.utils"
+
+ZSH_THEME="agnoster"
+
+plugins=(git kubectl)
+
+for f in $UTILS/*; do source $f; done
+
+source $ZSH/oh-my-zsh.sh
