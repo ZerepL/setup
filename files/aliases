@@ -6,6 +6,7 @@ alias docker-rm="docker rm $(docker ps -aq)"
 alias docker-clear="docker stop $(docker ps -aq); docker rm $(docker ps -aq)"
 
 alias push="$UTILS/scripts/push.sh"
+alias push="$UTILS/scripts/resolve_screen.sh"
 
 alias refresh="source $HOME/.zshrc"
 

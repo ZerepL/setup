@@ -20,7 +20,8 @@ sudo apt-get install -y \
     gnupg \
     lsb-release \
     powerline \
-    apt-transport-https
+    apt-transport-https \
+    vim
 
 echo "Creating and config utils"
 mkdir -p $UTILS/scripts $UTILS/bin
