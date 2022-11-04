@@ -1,12 +1,16 @@
+# Docker
 alias docker-minikube="eval $(minikube docker-env)"
 alias docker-default="eval $(minikube docker-env -u)"
 
-alias docker-stop="docker stop $(docker ps -aq)"
-alias docker-rm="docker rm $(docker ps -aq)"
-alias docker-clear="docker stop $(docker ps -aq); docker rm $(docker ps -aq)"
-
+# Scripts
+alias mvn-build-run="$UTILS/scripts/mvn_install.sh" # Java Maven
 alias push="$UTILS/scripts/push.sh"
-alias push="$UTILS/scripts/resolve_screen.sh"
 
+# Folders
+alias windows-home="cd /mnt/c/Users/Lucas\ Perez"
+
+# Utils
 alias refresh="source $HOME/.zshrc"
+alias utf-clear="find . -name '*.java' -exec sed -ri '${/^$/d;}' {} \;"
+alias unix2all="find . -type f -print0 | xargs -0 dos2unix"
 

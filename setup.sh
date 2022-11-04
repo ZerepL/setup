@@ -21,7 +21,7 @@ sudo apt-get install -y \
     lsb-release \
     powerline \
     apt-transport-https \
-    vim
+    vim 
 
 echo "Creating and config utils"
 mkdir -p $UTILS/scripts $UTILS/bin
@@ -38,7 +38,6 @@ then
 	echo "Using WSL, converting .zshrc file"
     sudo apt install dos2unix -y
     cp files/zshrc $HOME/.zshrc
-    cat files/zshrc_docker_wsl >> $HOME/.zshrc
     dos2unix -f $HOME/.zshrc
 else
     cp files/zshrc $HOME/.zshrc
