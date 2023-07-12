@@ -26,6 +26,7 @@ sudo apt-get install -y \
 echo "Creating and config utils"
 mkdir -p $UTILS/scripts $UTILS/bin
 cp files/aliases files/paths $UTILS/
+cp files/vimrc $HOME/.vimrc
 cp scripts/* $UTILS/scripts
 sudo chmod +x $UTILS/scripts/* 
 

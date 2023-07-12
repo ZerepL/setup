@@ -3,7 +3,12 @@ export UTILS="$HOME/.utils"
 
 ZSH_THEME="agnoster"
 
-plugins=(git kubectl)
+plugins=(
+    git
+    kubectl
+    mvn
+    zsh-autosuggestion
+)
 
 for f in $UTILS/*; do source $f; done
 

@@ -1,6 +1,11 @@
 # Docker
 alias docker-minikube="eval $(minikube docker-env)"
 alias docker-default="eval $(minikube docker-env -u)"
+alias dspall='docker stop $(docker ps -aq)'
+alias drall='docker rm $(docker ps -aq)'
+alias dkall='docker stop $(docker ps -aq); docker rm $(docker ps -aq)'
+alias dstall='' #TBD
+alias dk='docker rm -f'
 
 # Scripts
 alias mvn-build-run="$UTILS/scripts/mvn_install.sh" # Java Maven
@@ -13,4 +18,8 @@ alias windows-home="cd /mnt/c/Users/Lucas\ Perez"
 alias refresh="source $HOME/.zshrc"
 alias utf-clear="find . -name '*.java' -exec sed -ri '${/^$/d;}' {} \;"
 alias unix2all="find . -type f -print0 | xargs -0 dos2unix"
+alias show-aliases="cat $UTILS/aliases"
+
+# Maven
+alias mvnra='mvn spring-boot:run -f app/'
 

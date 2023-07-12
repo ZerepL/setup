@@ -20,4 +20,6 @@ curl https://raw.githubusercontent.com/ahmetb/kubectx/master/kubens >> $UTILS/bi
 
 curl https://raw.githubusercontent.com/ahmetb/kubectx/master/kubectx >> $UTILS/bin/kubectx
 
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+
 chmod +x $UTILS/bin/*
