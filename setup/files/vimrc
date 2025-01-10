@@ -1,0 +1,18 @@
+" Code style
+set numberwidth=2
+set relativenumber
+set report=0
+set expandtab
+set tabstop=2
+
+" Automatic Indentation
+set autoindent
+set shiftwidth=2
+
+" Sugestion menu
+set wildmenu
+set wildmode=full
+
+" Miscs
+set noswapfile
+"set spell selllang=en_us
