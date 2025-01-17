@@ -108,25 +108,9 @@
 ;;  :config (helm-mode))
 (use-package lsp-treemacs)
 
-(setq lsp-java-vmargs
-      (list
-         "-noverify"
-         "-Xmx4G"
-         "-XX:+UseG1GC"
-         "-XX:+UseStringDeduplication"
-         "-javaagent:/home/<TBD>/sandbox/lombok.jar"))
-
-(setq lsp-java-format-settings-url "file:///home/<TBD>/.utils/files/java.xml")
-(setq lsp-java-format-settings-profile "GoogleStyle")
-(setq lsp-java-format-on-type-enabled t)
-(setq lsp-java-save-actions-organize-imports t)
-
 ;; (setq lsp-java-format-enabled nil)
 
 
-;; Folders and files
-(setq projectile-project-root-files '(".git")) ;; Should use .git as project root
-(setq projectile-project-root-files-top-down '(".git"))
 
 ;; (add-hook 'java-mode-hook
 ;;       (lambda ()
@@ -152,7 +136,7 @@
 (setq auto-save-interval 200)  ;; Save after typing 200 characters
 
 
-;; AI ASSISTANCE =========================================
+;; AI ASSISTANCE ===========================================
 
 ;; OPTIONAL configuration
 (setq
@@ -162,7 +146,7 @@
                  :stream t
                  :models '(codellama:7b)))
 
-;; MAPS ==================================================
+;; MAPS ====================================================
 
 (map! :leader
       ;; Counsel Keys
@@ -184,4 +168,67 @@
       "c mjddm" #'dap-java-debug-test-method
       "c mjddc" #'dap-java-debug-test-class
       "c mjdt" #'dap-breakpoint-toggle
+      ;; Find references
+      "c u" #'lsp-find-references
      )
+
+;; Projectile ==============================================
+
+;; Normalize to always by ~/sandbox/
+;; (after! projectile
+;;   (setq projectile-project-search-path '("~/sandbox/")
+;;         projectile-project-root-files-functions
+;;         '(projectile-root-local
+;;           projectile-root-top-down
+;;           projectile-root-bottom-up
+;;           projectile-root-top-down-recurring)))
+
+;; Prevent projectile from addining new projects
+(after! projectile
+  (setq projectile-track-known-projects-automatically nil
+        projectile-indexing-method 'alien
+        projectile-cache-file (expand-file-name ".projectile.cache" user-emacs-directory)))
+
+;; Folders and files
+;; (setq projectile-project-root-files '(".git")) ;; Should use .git as project root
+;; (setq projectile-project-root-files-top-down '(".git"))
+
+
+;; JAVA ====================================================
+
+;; Lombok
+(setq lsp-java-vmargs
+      (list
+         "-noverify"
+         "-Xmx4G"
+         "-XX:+UseG1GC"
+         "-XX:+UseStringDeduplication"
+         "-javaagent:/home/zerepl/sandbox/lombok.jar"))
+
+;; Format Java
+(setq lsp-java-format-settings-url "file:///home/zerepl/.utils/files/java.xml")
+(setq lsp-java-format-settings-profile "GoogleStyle")
+(setq lsp-java-format-on-type-enabled t)
+(setq lsp-java-save-actions-organize-imports t)
+
+
+;; Configure Java Debug Adapter
+(setq dap-java-debug-port 8787)
+
+;; Attaching to a remote debugging session
+(dap-register-debug-template "Java Debug (Attach)"
+  (list :type "java"
+        :request "attach"
+        :host "127.0.0.1"
+        :port 8787
+        :name "Java Debug (Attach)"))
+
+
+;; Test local DBs ==========================================
+(setq sql-connection-alist
+      '((localPostgres
+         (sql-product 'postgres)
+         (user "postgres")
+         (database "rprepo")
+         (server "localhost")
+         (port 5432))))
