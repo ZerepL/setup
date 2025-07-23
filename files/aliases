@@ -1,26 +1,47 @@
 # Docker
-alias docker="docker.exe"
-alias docker-compose="docker-compose.exe"
+alias docker-compose='docker compose'
 alias dstop='docker stop $(docker ps -aq)'
 alias dkall='docker stop $(docker ps -aq); docker rm $(docker ps -aq)'
-alias dsapp='cd /mnt/c/Users/$(whoami)/Documents/general-docker/apps; docker-compose up -d; cd -'
+alias dsapp='cd /home/$(whoami)/sandbox/personal/general-docker/apps; docker-compose up -d; cd -'
 alias dk='docker rm -f'
 alias docker-fixi="$UTILS/scripts/resolve_docker.sh"
+alias dps='docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"'
+alias dlogs='docker logs -f'
+alias dexec='docker exec -it'
+
+# Kubernetes
+alias k='kubectl'
+alias kgp='kubectl get pods'
+alias kgs='kubectl get services'
+alias kgd='kubectl get deployments'
+alias kdp='kubectl describe pod'
+alias kds='kubectl describe service'
+alias kdd='kubectl describe deployment'
+alias klogs='kubectl logs -f'
+alias kexec='kubectl exec -it'
 
 # Java
+alias mvn="/opt/apache-maven-3.9.9/bin/mvn"
 alias mvnbr="$UTILS/scripts/mvn_install.sh"
 alias mvnjdk=". $UTILS/scripts/java_version_select.sh"
-alias mvn="/opt/apache-maven-3.9.1/bin/mvn"
 alias mvnra='mvn spring-boot:run -f app/'
-alias mvnct='mvn -P component-tests test'
+alias mvnrct='$UTILS/scripts/maven_tests.sh'
+alias mvnfct='$UTILS/scripts/maven_failed_tests.sh'
 alias mvnup="mvn versions:update-properties"
 alias mvncc="mvn clean compile"
-alias mvnraq="mvnra | grep 41450 &"
 alias mvnprof="mvn help:all-profiles"
+alias mvnst="$UTILS/scripts/maven_single_test.sh"
+alias mvncft="wc -l /tmp/failed_tests.txt"
 
-# Folders
-alias windows-home='cd /mnt/c/Users/$(whoami)/'
-alias windows-documents='cd /mnt/c/Users/$(whoami)/Documents'
+# Git shortcuts
+alias gs='git status'
+alias ga='git add'
+alias gc='git commit'
+alias gp='git push'
+alias gl='git log --oneline'
+alias gd='git diff'
+alias gb='git branch'
+alias gco='git checkout'
 
 # Utils
 alias refresh="source $HOME/.zshrc"
@@ -30,6 +51,28 @@ alias unix2all="find . -type f -print0 | xargs -0 dos2unix"
 alias show-aliases="cat $UTILS/aliases"
 alias guts="cd $UTILS"
 alias edit-alias="vim $UTILS/aliases"
+alias upgrade="sudo apt update; sudo apt upgrade -y"
+alias update-q="$UTILS/scripts/update_amazon_q.sh"
+alias wake="$UTILS/scripts/wake.sh"
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias grep='grep --color=auto'
 
-# Ollama
-alias ollama='ollama.exe'
+# System monitoring
+alias ports='netstat -tulanp'
+alias meminfo='free -m -l -t'
+alias psmem='ps auxf | sort -nr -k 4'
+alias pscpu='ps auxf | sort -nr -k 3'
+
+# Personal health
+alias alarm="$UTILS/scripts/alarm.sh"
+
+# Doom Emacs
+alias doom="$HOME/.config/emacs/bin/doom"
+
+# AWS shortcuts
+alias awsp='export AWS_PROFILE='
+alias awsls='aws configure list-profiles'

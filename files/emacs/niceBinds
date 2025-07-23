@@ -1,0 +1,56 @@
+C-g = stop command
+
+C-v = pgdown
+M-v = pgup
+
+C-p = up
+C-b = left
+C-f = right
+C-n = down
+
+M-f = next word
+M-b = previous word
+
+C-a = Beginning of a line
+C-e = end of a line
+M-a = Beginning of a sentence
+M-e = End of a sentence
+
+M-< = Beginning of file
+M-> = End of file
+
+C-u X = Repeate a command X times
+
+C-x 1 = kill all other windows and keep 1
+
+C-l = center screen
+
+M-, = Go back
+M-. = evil-jump-back << Use this one
+
+g g = Start of the file
+Shift g = End of the file
+
+M-g g = Go to line
+
+Open treemacs = SPC o p
+resize = w (size you want)
+
+## Markdown
+SPC m t m = Disable/Enable markdown view
+
+C-x C-b = open buffers (SPC b i = better see bellow)
+
+SPC b b = filtered buffers
+SPC b i = ibuffers
+
+# LSP
+SPC c d = go to definition
+SPC c D = go to implementation
+
+# Java
+SPC c a = alt + enter of intellij
+M-SPC c r = rename variable/method
+
+# Debug
+SPC m d = dap-hydra

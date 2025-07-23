@@ -104,20 +104,9 @@
 (use-package dap-mode :after lsp-mode :config (dap-auto-configure-mode))
 (use-package dap-java)
 (use-package helm-lsp)
-;;(use-package helm
+;; (use-package helm
 ;;  :config (helm-mode))
 (use-package lsp-treemacs)
-
-;; (setq lsp-java-format-enabled nil)
-
-
-
-;; (add-hook 'java-mode-hook
-;;       (lambda ()
-;;          (setq c-basic-offset 2)  ; Set indentation level to 2 spaces
-;;          (setq tab-width 2)       ; Set tab width to 2 spaces
-;;          (setq indent-tabs-mode nil))) ; Use spaces instead of tabs
-
 
 ;; GIT || MAGIT ==========================================
 (defun my/magit-push-with-script ()
@@ -135,29 +124,10 @@
 (setq auto-save-timeout 20)  ;; Save every 20 seconds
 (setq auto-save-interval 200)  ;; Save after typing 200 characters
 
-
-;; AI ASSISTANCE ===========================================
-
-;; OPTIONAL configuration
-(setq
- gptel-model 'mistral:latest
- gptel-backend (gptel-make-ollama "Ollama"
-                 :host "localhost:11434"
-                 :stream t
-                 :models '(codellama:7b)))
-
 ;; MAPS ====================================================
 
+
 (map! :leader
-      ;; Counsel Keys
-;;      "c mcr" #'counsel-rg
-      ;; "c mcr" #'comment-or-uncomment-region
-      ;; "c mcl" #'comment-line
-      ;; "c mcg" #'counsel-grep
-      ;; "c mca" #'counsel-ag
-      ;; ;; Livelo DCU Keys
-      ;; "c mdl" #'dcu-pull-global
-      ;; "c mds" #'dcu-push-global
       ;; Lsp Java Keys
       "c mjs" #'lsp-ui-sideline-apply-code-actions
       "c mji" #'lsp-goto-implementation
@@ -172,27 +142,29 @@
       "c u" #'lsp-find-references
      )
 
-;; Projectile ==============================================
+(map! :map local-leader-map
+      :prefix "t"
+      :desc "Run all component tests" "A"
+      (lambda ()
+        (interactive)
+        (async-shell-command "mvnrct"))
 
-;; Normalize to always by ~/sandbox/
-;; (after! projectile
-;;   (setq projectile-project-search-path '("~/sandbox/")
-;;         projectile-project-root-files-functions
-;;         '(projectile-root-local
-;;           projectile-root-top-down
-;;           projectile-root-bottom-up
-;;           projectile-root-top-down-recurring)))
+      :desc "Run only the failed component tests" "f"
+      (lambda ()
+        (interactive)
+        (async-shell-command "mvnfct")))
+
+
+(map! :nv "M-," #'better-jumper-jump-backward
+      :nv "M-." #'better-jumper-jump-forward)
+
+;; Projectile ==============================================
 
 ;; Prevent projectile from addining new projects
 (after! projectile
   (setq projectile-track-known-projects-automatically nil
         projectile-indexing-method 'alien
         projectile-cache-file (expand-file-name ".projectile.cache" user-emacs-directory)))
-
-;; Folders and files
-;; (setq projectile-project-root-files '(".git")) ;; Should use .git as project root
-;; (setq projectile-project-root-files-top-down '(".git"))
-
 
 ;; JAVA ====================================================
 
@@ -203,14 +175,13 @@
          "-Xmx4G"
          "-XX:+UseG1GC"
          "-XX:+UseStringDeduplication"
-         "-javaagent:/home/zerepl/sandbox/lombok.jar"))
+         "-javaagent:$HOME/sandbox/lombok.jar"))
 
 ;; Format Java
-(setq lsp-java-format-settings-url "file:///home/zerepl/.utils/files/java.xml")
+(setq lsp-java-format-settings-url "file://$HOME/.utils/files/java.xml")
 (setq lsp-java-format-settings-profile "GoogleStyle")
 (setq lsp-java-format-on-type-enabled t)
 (setq lsp-java-save-actions-organize-imports t)
-
 
 ;; Configure Java Debug Adapter
 (setq dap-java-debug-port 8787)
@@ -223,12 +194,74 @@
         :port 8787
         :name "Java Debug (Attach)"))
 
+(defun my/dap-yank-value-at-point (node)
+  (interactive (list (treemacs-node-at-point)))
+  (kill-new (message (plist-get (button-get node :item) :value))))
+
+
+;; Ensure all required DAP features are enabled
+(setq dap-auto-configure-features '(sessions locals breakpoints expressions))
+
+;; Allow more time for DAP responses (if applicable)
+(setq dap-inhibit-io nil)  ;; Ensure debugging messages are shown
 
 ;; Test local DBs ==========================================
 (setq sql-connection-alist
       '((localPostgres
          (sql-product 'postgres)
-         (user "postgres")
-         (database "rprepo")
-         (server "localhost")
-         (port 5432))))
+         (sql-user "postgres")
+         (sql-database "rprepo")
+         (sql-server "localhost")
+         (sql-port 5432))))
+
+;; Music ===================================================
+(use-package! smudge
+  :bind-keymap ("C-c ." . smudge-command-map)
+  :custom
+  (smudge-oauth2-client-secret "")
+  (smudge-oauth2-client-id "")
+  ;; optional: enable transient map for frequent commands
+  (smudge-player-use-transient-map t)
+  :config
+  ;; optional: display current song in mode line
+  (global-smudge-remote-mode))
+
+(setq smudge-transport-port 8888)
+
+(after! smudge
+  (define-key smudge-mode-map (kbd "C-c .") 'smudge-command-map)
+  (map! :nv "C-c . t l" #'smudge-track-load-more
+        :nv "C-c . p l" #'smudge-playlist-load-more))
+
+;; Markdown ================================================
+ (defvar nb/current-line '(0 . 0)
+   "(start . end) of current line in current buffer")
+ (make-variable-buffer-local 'nb/current-line)
+
+ (defun nb/unhide-current-line (limit)
+   "Font-lock function"
+   (let ((start (max (point) (car nb/current-line)))
+         (end (min limit (cdr nb/current-line))))
+     (when (< start end)
+       (remove-text-properties start end
+                       '(invisible t display "" composition ""))
+       (goto-char limit)
+       t)))
+
+ (defun nb/refontify-on-linemove ()
+   "Post-command-hook"
+   (let* ((start (line-beginning-position))
+          (end (line-beginning-position 2))
+          (needs-update (not (equal start (car nb/current-line)))))
+     (setq nb/current-line (cons start end))
+     (when needs-update
+       (font-lock-fontify-block 3))))
+
+ (defun nb/markdown-unhighlight ()
+   "Enable markdown concealling"
+   (interactive)
+   (markdown-toggle-markup-hiding 'toggle)
+   (font-lock-add-keywords nil '((nb/unhide-current-line)) t)
+   (add-hook 'post-command-hook #'nb/refontify-on-linemove nil t))
+
+(add-hook 'markdown-mode-hook #'nb/markdown-unhighlight)

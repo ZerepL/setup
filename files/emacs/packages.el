@@ -56,4 +56,5 @@
 (package! feature-mode)
 (package! yaml-mode)
 (package! lsp-ui)
-(package! gptel)
+(package! verb)
+(package! smudge)
