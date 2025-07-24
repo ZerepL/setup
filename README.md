@@ -25,7 +25,7 @@ An interactive bash script to configure and install your personal development wo
 
 1. Clone this repository:
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/ZerepL/setup.git
    cd setup
    ```
 
