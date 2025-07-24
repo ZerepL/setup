@@ -189,14 +189,4 @@ guts                  # Navigate to utilities directory
 edit-alias           # Edit aliases file
 ```
 
-## Contributing
-
-Feel free to customize the script for your needs:
-- Add new components to the selection menu
-- Modify aliases in `files/aliases`
-- Update configurations in `files/` directory
-- Add new utility scripts to `scripts/` directory
-
----
-
-**Note**: This setup script is designed for personal development environments. Review the code before running on production systems.
+**Note**: This setup script is designed for personal development environments. 
