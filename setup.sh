@@ -255,11 +255,37 @@ fi
 
 if [ "$INSTALL_DOOM" = true ]; then
     echo ""
+    echo "=== Installing Doom Emacs Dependencies ==="
+    
+    # Install core dependencies for Doom Emacs
+    echo "Installing Doom Emacs system dependencies..."
+    sudo apt-get install -y \
+        emacs \
+        ripgrep \
+        fd-find \
+        cmake \
+        shellcheck \
+        tidy \
+        default-jdk \
+        markdown
+    
+    # Create symbolic link for fd command (Ubuntu installs it as fdfind)
+    sudo ln -sf /usr/bin/fdfind /usr/local/bin/fd
+    
+    # Install Node.js and npm for LSP servers
+    echo "Installing Node.js and npm for LSP servers..."
+    if ! command -v node &> /dev/null; then
+        curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+        sudo apt-get install -y nodejs
+    fi
+    
+    # Install web development tools
+    echo "Installing web development tools..."
+    sudo npm install -g stylelint js-beautify
+    
+    echo ""
     echo "=== Installing Doom Emacs ==="
     if [ ! -d "$HOME/.config/emacs" ]; then
-        echo "Installing Emacs..."
-        sudo apt-get install -y emacs
-        
         echo "Cloning Doom Emacs..."
         git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs
         
@@ -277,11 +303,53 @@ if [ "$INSTALL_DOOM" = true ]; then
         if [ -f "files/emacs/packages.el" ]; then
             cp files/emacs/packages.el ~/.config/doom/
         fi
+        if [ -f "files/emacs/custom.el" ]; then
+            cp files/emacs/custom.el ~/.config/doom/
+        fi
         
         echo "Syncing Doom configuration..."
         ~/.config/emacs/bin/doom sync
+        
+        echo ""
+        echo "=== Installing Nerd Fonts ==="
+        echo "Installing Symbols Nerd Font for Doom Emacs icons..."
+        
+        # Create fonts directory if it doesn't exist
+        mkdir -p ~/.local/share/fonts
+        
+        # Download and install Symbols Nerd Font
+        NERD_FONT_VERSION="v3.1.1"
+        FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/${NERD_FONT_VERSION}/NerdFontsSymbolsOnly.zip"
+        
+        echo "Downloading Symbols Nerd Font..."
+        curl -L -o /tmp/NerdFontsSymbolsOnly.zip "$FONT_URL"
+        
+        echo "Installing font..."
+        unzip -o /tmp/NerdFontsSymbolsOnly.zip -d ~/.local/share/fonts/
+        
+        # Update font cache
+        fc-cache -fv ~/.local/share/fonts/
+        
+        # Clean up
+        rm -f /tmp/NerdFontsSymbolsOnly.zip
+        
+        echo "Nerd Font installed successfully!"
     else
         echo "Doom Emacs already installed"
+        echo "Updating Doom configuration..."
+        if [ -f "files/emacs/init.el" ]; then
+            cp files/emacs/init.el ~/.config/doom/
+        fi
+        if [ -f "files/emacs/config.el" ]; then
+            cp files/emacs/config.el ~/.config/doom/
+        fi
+        if [ -f "files/emacs/packages.el" ]; then
+            cp files/emacs/packages.el ~/.config/doom/
+        fi
+        if [ -f "files/emacs/custom.el" ]; then
+            cp files/emacs/custom.el ~/.config/doom/
+        fi
+        ~/.config/emacs/bin/doom sync
     fi
 fi
 
@@ -307,6 +375,10 @@ echo "4. Configure your Git credentials: git config --global user.name/user.emai
 if [ "$wsl" = true ] && [ "$INSTALL_DOCKER" = true ]; then
     echo "5. Install Docker Desktop on Windows and enable WSL2 integration"
 fi
+if [ "$INSTALL_DOOM" = true ]; then
+    echo "6. Run '~/.config/emacs/bin/doom doctor' to verify Doom Emacs setup"
+    echo "7. Install Nerd Fonts by running 'M-x nerd-icons-install-fonts' in Emacs (optional)"
+fi
 echo ""
 
 if whiptail --title "Reboot System" --yesno "Would you like to reboot the system now?" 10 60; then
@@ -317,5 +389,8 @@ else
     echo "Setup complete! Please log out and log back in for all changes to take effect."
     if [ "$INSTALL_ZSH" = true ]; then
         echo "Don't forget to change your default shell with: chsh -s \$(which zsh)"
+    fi
+    if [ "$INSTALL_DOOM" = true ]; then
+        echo "Run '~/.config/emacs/bin/doom doctor' to verify your Doom Emacs installation."
     fi
 fi
