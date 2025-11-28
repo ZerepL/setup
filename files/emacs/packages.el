@@ -58,3 +58,5 @@
 (package! lsp-ui)
 (package! verb)
 (package! smudge)
+(unpin! org-roam)
+(package! org-roam-ui)
