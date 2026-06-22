@@ -58,5 +58,7 @@
 (package! lsp-ui)
 (package! verb)
 (package! smudge)
+(package! lsp-sonarlint)
+(package! graphql-mode)
 (unpin! org-roam)
 (package! org-roam-ui)

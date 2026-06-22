@@ -178,7 +178,7 @@
          "-javaagent:$HOME/sandbox/lombok.jar"))
 
 ;; Format Java
-(setq lsp-java-format-settings-url "file://$HOME/.utils/files/java.xml")
+(setq lsp-java-format-settings-url "file://$UTILS/files/java.xml")
 (setq lsp-java-format-settings-profile "GoogleStyle")
 (setq lsp-java-format-on-type-enabled t)
 (setq lsp-java-save-actions-organize-imports t)
@@ -218,6 +218,7 @@
 (use-package! smudge
   :bind-keymap ("C-c ." . smudge-command-map)
   :custom
+  ;; NOTE: Set these values after setup - do not commit real credentials
   (smudge-oauth2-client-secret "")
   (smudge-oauth2-client-id "")
   ;; optional: enable transient map for frequent commands
@@ -265,6 +266,44 @@
    (add-hook 'post-command-hook #'nb/refontify-on-linemove nil t))
 
 (add-hook 'markdown-mode-hook #'nb/markdown-unhighlight)
+
+
+;; SonarQube ===============================================
+
+;; (after! lsp-mode
+;;   (setq lsp-allow-multiple-clients nil))
+
+;; (use-package lsp-sonarlint
+;;   :after lsp-mode
+;;   :custom
+;;   ;; Java only
+;;   (lsp-sonarlint-enabled-analyzers '("java"))
+;;   ;; auto-download VSCode extension SonarLint LS
+;;   (lsp-sonarlint-auto-download t)
+;;   (lsp-sonarlint-disable-telemetry t)
+;;   (lsp-sonarlint-use-system-jre t)
+;;   ;; Connected mode projects
+;;   (lsp-sonarlint-connected-mode-projects
+;;    '(("your-sonarqube-server.com"
+;;       ;;("your-project-key" . "/path/to/project-root")
+;;       ("my-project" . "~/sandbox/my-project")))))
+;;       ;; You can bind multiple projects here
+
+;; GraphQL =================================================
+
+;; Associate GraphQL files with the mode
+(add-to-list 'auto-mode-alist '("\\.graphql\\'" . graphql-mode))
+(add-to-list 'auto-mode-alist '("\\.gql\\'" . graphql-mode))
+(add-to-list 'auto-mode-alist '("\\.graphqls\\'" . graphql-mode))
+
+;; Doom game launcher
+(defun play-doom ()
+  "Launch the original Doom game."
+  (interactive)
+  (async-shell-command "chocolate-doom -iwad ~/.doom/doom1.wad"))
+
+;; Keybinding for Doom game
+(map! :leader "g d" #'play-doom)
 
 ;; Org mode ================================================
 
