@@ -2,7 +2,7 @@
 alias docker-compose='docker compose'
 alias dstop='docker stop $(docker ps -aq)'
 alias dkall='docker stop $(docker ps -aq); docker rm $(docker ps -aq)'
-alias dsapp='cd /home/$(whoami)/sandbox/personal/general-docker/apps; docker-compose up -d; cd -'
+
 alias dk='docker rm -f'
 alias docker-fixi="$UTILS/scripts/resolve_docker.sh"
 alias dps='docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"'
@@ -32,6 +32,8 @@ alias mvncc="mvn clean compile"
 alias mvnprof="mvn help:all-profiles"
 alias mvnst="$UTILS/scripts/maven_single_test.sh"
 alias mvncft="wc -l /tmp/failed_tests.txt"
+alias mvnci="mvn clean install"
+alias report-check='$UTILS/scripts/validation_report.sh'
 
 # Git shortcuts
 alias gs='git status'
@@ -42,6 +44,9 @@ alias gl='git log --oneline'
 alias gd='git diff'
 alias gb='git branch'
 alias gco='git checkout'
+alias git-no-ssl="sed -i 's/sslVerify = true/sslVerify = false/g' ~/.gitconfig"
+alias git-ssl="sed -i 's/sslVerify = false/sslVerify = true/g' ~/.gitconfig"
+alias gph="$UTILS/scripts/push.sh"
 
 # Utils
 alias refresh="source $HOME/.zshrc"
@@ -72,7 +77,11 @@ alias alarm="$UTILS/scripts/alarm.sh"
 
 # Doom Emacs
 alias doom="$HOME/.config/emacs/bin/doom"
+alias doom-rmp="$UTILS/scripts/doom_remove_project.sh"
 
 # AWS shortcuts
 alias awsp='export AWS_PROFILE='
 alias awsls='aws configure list-profiles'
+
+# IA
+alias kp="kiro-cli chat --agent personal-agent"
