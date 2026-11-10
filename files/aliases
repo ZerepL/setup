@@ -19,6 +19,7 @@ alias kds='kubectl describe service'
 alias kdd='kubectl describe deployment'
 alias klogs='kubectl logs -f'
 alias kexec='kubectl exec -it'
+alias kns="kubens"
 
 # Java
 alias mvn="/opt/apache-maven-3.9.9/bin/mvn"
@@ -85,3 +86,4 @@ alias awsls='aws configure list-profiles'
 
 # IA
 alias kp="kiro-cli chat --agent personal-agent"
+
